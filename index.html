@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For Riddhima — With All My Love, Ishu</title>
+  <meta name="description" content="A romantic generative heart and tribute dedicated to Riddhima from Ishu, celebrating our love story since October 3, 2026.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Ambient floating hearts & petals background -->
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="site-wrapper">
+    <!-- Floating Romantic Music Controller -->
+    <button id="audioToggleBtn" class="audio-toggle-btn" aria-label="Toggle romantic music">
+      <span class="audio-icon">🎵</span>
+      <span id="audioLabel">Play Our Melody</span>
+    </button>
+
+    <!-- Hero Section with Generative Typographic Heart -->
+    <header class="hero-section">
+      <div class="header-badge">
+        <span class="sparkle">✨</span>
+        <span>A Love Story &bull; Riddhima & Ishu</span>
+        <span class="sparkle">✨</span>
+      </div>
+
+      <h1 class="title-primary">
+        To My Dearest Riddhima
+        <span class="title-cursive">You Are My Whole Heart</span>
+      </h1>
+
+      <p class="subtitle-love">
+        Across every language, every universe, and every whisper of time — my heart beats only for you.
+      </p>
+
+      <!-- Parametric Heart Canvas -->
+      <div class="heart-canvas-container">
+        <canvas id="heartCanvas"></canvas>
+      </div>
+
+      <div class="canvas-controls">
+        <button id="replayHeartBtn" class="btn-secondary">
+          <span>✨</span> Replay Heart Animation
+        </button>
+        <a href="#letter" class="btn-secondary">
+          <span>💌</span> Read My Letter
+        </a>
+        <a href="#milestone" class="btn-secondary">
+          <span>⏳</span> Our Journey
+        </a>
+      </div>
+    </header>
+
+    <!-- Relationship Milestone Counter -->
+    <section id="milestone" class="milestone-section">
+      <h2 class="section-title">Our Love Story</h2>
+      <p id="counterSubtitle" class="section-subtitle">Counting every heartbeat since October 3, 2026</p>
+
+      <div class="counter-grid">
+        <div class="counter-card">
+          <div class="counter-number" id="countDays">0</div>
+          <div class="counter-label">Days</div>
+        </div>
+        <div class="counter-card">
+          <div class="counter-number" id="countHours">00</div>
+          <div class="counter-label">Hours</div>
+        </div>
+        <div class="counter-card">
+          <div class="counter-number" id="countMinutes">00</div>
+          <div class="counter-label">Minutes</div>
+        </div>
+        <div class="counter-card">
+          <div class="counter-number" id="countSeconds">00</div>
+          <div class="counter-label">Seconds</div>
+        </div>
+      </div>
+
+      <div class="date-pill">
+        <span>🌹</span>
+        <span>The beginning of our forever: <strong>October 3, 2026</strong></span>
+      </div>
+    </section>
+
+    <!-- Romantic Love Letter Section -->
+    <section id="letter" class="letter-section">
+      <article class="parchment-letter">
+        <h2 class="letter-salutation">My Dearest Riddhima,</h2>
+
+        <div class="letter-body">
+          <p>
+            From the very first moment you walked into my life, you turned the ordinary into magic. You brought colors into my world that I never knew existed, and warmth into my days that nothing else could ever replace.
+          </p>
+
+          <p class="letter-highlight">
+            "They say home is a place, but for me, home is whenever I hear your voice, look into your eyes, or see your gentle smile."
+          </p>
+
+          <p>
+            Every single multilingual phrase wrapped in that heart represents a promise: that through every high and low, across all the days of our lives, I will always choose you, cherish you, and hold your hand with the deepest love.
+          </p>
+
+          <p>
+            Thank you for being my peace, my biggest smile, and my favorite part of every day. You are, and will always be, my once-in-a-lifetime.
+          </p>
+        </div>
+
+        <div class="letter-signoff">
+          Yours eternally,
+          <span>With all my love &bull; Ishu ❤️</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- Reasons Why I Love You Cards -->
+    <section class="reasons-section">
+      <h2 class="section-title">Why You Are My Everything</h2>
+      <p class="section-subtitle">Just a few of the million reasons my soul chose you</p>
+
+      <div class="reasons-grid">
+        <div class="reason-card">
+          <div class="reason-icon">🌸</div>
+          <h3 class="reason-title">Your Gentle Heart</h3>
+          <p class="reason-desc">The kindness and compassion you carry so effortlessly makes everyone around you feel loved, especially me.</p>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">✨</div>
+          <h3 class="reason-title">Your Radiant Smile</h3>
+          <p class="reason-desc">One smile from you can instantly melt away the hardest days and fill my entire world with sunshine.</p>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">🌙</div>
+          <h3 class="reason-title">Our Quiet Moments</h3>
+          <p class="reason-desc">The way silence feels so comforting when it's shared with you, just knowing our hearts are beating as one.</p>
+        </div>
+
+        <div class="reason-card">
+          <div class="reason-icon">💫</div>
+          <h3 class="reason-title">My Favorite Confidante</h3>
+          <p class="reason-desc">You are the first person I want to share every happy thought, silly joke, and deepest dream with.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-names">Riddhima & Ishu</div>
+      <p>Forever & Always &bull; October 3, 2026 &infin;</p>
+      <p style="margin-top: 8px; font-size: 0.8rem; opacity: 0.7;">Crafted with all the love in the universe ❤️</p>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/heartCanvas.js"></script>
+  <script src="js/music.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
