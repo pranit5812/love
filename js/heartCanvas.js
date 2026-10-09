@@ -1,7 +1,7 @@
 /**
  * Multilingual Parametric Heart Typography & Animation Engine
  * Preserves & extends the original algorithm from love.py to HTML5 Canvas
- * Personalized for Riddhima & Ishu
+ * Personalized for Riddhima & pranit
  */
 
 class RomanticHeartCanvas {
@@ -10,23 +10,31 @@ class RomanticHeartCanvas {
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
 
-    // Phrases: Original 20 multilingual languages + romantic personalizations
+    const config = window.ROMANTIC_CONFIG || {
+      partnerName: "Riddhima",
+      senderName: "pranit"
+    };
+
+    const pName = config.partnerName;
+    const sName = config.senderName;
+
+    // Phrases: Original 20 multilingual languages + personalized romantic phrases
     this.phrases = [
-      "I love you", "Riddhima ❤️ Ishu", "Te amo", "Je t'aime",
+      "I love you", `${pName} ❤️ ${sName}`, "Te amo", "Je t'aime",
       "Ich liebe dich", "Ti amo", "Eu te amo", "Я тебя люблю",
       "사랑해", "愛してる", "我爱你", "मैं तुमसे प्यार करता हूँ",
       "Σ' αγαπώ", "Ik hou van jou", "Jag älskar dig", "Kocham cię",
       "ฉันรักเธอ", "Anh yêu em", "Aku cinta kamu", "Я тебе кохаю",
-      "I love you, Riddhima", "Meri Jaan", "Forever & Always",
-      "My Heart", "Riddhima", "Ishu ❤️ Riddhima", "My Soulmate",
+      `I love you, ${pName}`, "Meri Jaan", "Forever & Always",
+      "My Heart", pName, `${sName} ❤️ ${pName}`, "My Soulmate",
       "Tujhpe Fida", "Dil ki Dhadkan", "October 3, 2026", "Always Yours"
     ];
 
     this.sizes = [9, 10, 11, 12, 13];
     this.fontFamily = "'Plus Jakarta Sans', Arial, sans-serif";
-    this.duration = 10; // Total spawn duration in seconds
-    this.animFrames = 42;
-    this.lift = 34;
+    this.duration = 9; // Total spawn duration in seconds
+    this.animFrames = 38;
+    this.lift = 32;
     this.gap = 7;
 
     // Palette: romantic warm wine -> crimson -> glowing rose -> blush highlight
@@ -34,7 +42,7 @@ class RomanticHeartCanvas {
     this.crimson = [0.92, 0.12, 0.28];
     this.rose = [1.0, 0.28, 0.45];
     this.flashColor = [1.0, 0.82, 0.88];
-    this.bgColor = [10 / 255, 4 / 255, 8 / 255]; // matches background
+    this.bgColor = [10 / 255, 4 / 255, 8 / 255]; // matches deep background
 
     this.placed = [];
     this.active = [];
@@ -42,6 +50,8 @@ class RomanticHeartCanvas {
     this.shimmerTimer = null;
     this.animationFrameId = null;
     this.isRunning = false;
+
+    this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     this.init();
   }
@@ -52,7 +62,6 @@ class RomanticHeartCanvas {
       this.handleResize();
     });
 
-    // Ensure fonts are loaded before calculating text metrics
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => {
         this.restart();
@@ -73,7 +82,6 @@ class RomanticHeartCanvas {
     this.ctx.resetTransform?.();
     this.ctx.scale(dpr, dpr);
 
-    // Compute dynamic scale based on canvas size
     this.sc = Math.min(this.width, this.height) / 36.5;
     this.oy = 15;
     this.centerX = this.width / 2;
@@ -165,7 +173,6 @@ class RomanticHeartCanvas {
       return phrasePool.splice(idx, 1)[0];
     };
 
-    // Calculate row height
     const maxFontSize = Math.max(...this.sizes);
     const rowH = maxFontSize * 1.35 + 4;
     const half = rowH / 2;
@@ -218,7 +225,6 @@ class RomanticHeartCanvas {
       y -= rowH;
     }
 
-    // Assign radial colors
     for (const p of placed) {
       const rad = Math.min(1.0, this.mathDist(p.x, p.y, cy));
       let base = this.mix(this.wine, this.crimson, 0.25 + 0.75 * rad);
@@ -254,6 +260,20 @@ class RomanticHeartCanvas {
     this.rendered = [];
     this.mainItems = [];
 
+    // If reduced motion is requested, render instantly without animation ticks
+    if (this.prefersReducedMotion) {
+      for (const item of this.order) {
+        item.currentX = item.x;
+        item.currentY = -item.y;
+        item.currentColor = [...item.color];
+        item.isShimmering = false;
+        this.rendered.push(item);
+        this.mainItems.push(item);
+      }
+      this.redrawAll();
+      return;
+    }
+
     const totalTicks = (this.duration * 1000) / 16;
     this.rate = this.order.length / totalTicks;
     this.acc = 0.0;
@@ -265,7 +285,7 @@ class RomanticHeartCanvas {
 
   spawn(p) {
     p.f = 0;
-    p.dx = (Math.random() - 0.5) * 20;
+    p.dx = (Math.random() - 0.5) * 18;
     p.currentColor = [...p.color];
     p.isShimmering = false;
     this.active.push(p);
@@ -274,17 +294,16 @@ class RomanticHeartCanvas {
   animate(p) {
     p.f += 1;
     const u = Math.min(1.0, Math.max(0.0, p.f / this.animFrames));
-    const e = 1 - Math.pow(1 - u, 3); // cubic ease-out
+    const e = 1 - Math.pow(1 - u, 3);
     p.ease = e;
     p.u = u;
 
     const hover = (1 - e) * this.lift;
     p.currentX = p.x + p.dx * (1 - e);
-    p.currentY = -p.y - hover; // -y for canvas flip
+    p.currentY = -p.y - hover;
 
-    // Flash glow calculation
     const flashProgress = Math.max(0.0, Math.min(1.0, (u - 0.55) / 0.45));
-    const flashVal = 0.75 * Math.sin(Math.PI * flashProgress);
+    const flashVal = 0.7 * Math.sin(Math.PI * flashProgress);
     const blendedColor = this.mix(this.mix(this.bgColor, p.color, Math.pow(e, 1.5)), this.flashColor, flashVal);
     p.currentColor = blendedColor;
 
@@ -294,9 +313,9 @@ class RomanticHeartCanvas {
       p.currentColor = [...p.color];
       this.rendered.push(p);
       this.mainItems.push(p);
-      return false; // Done animating
+      return false;
     }
-    return true; // Still active
+    return true;
   }
 
   drawPhrase(p, isAnimated = false) {
@@ -307,21 +326,16 @@ class RomanticHeartCanvas {
     this.ctx.textAlign = 'center';
     this.ctx.textBaseline = 'middle';
 
-    // Shadow & Halo when floating in
     if (isAnimated && p.u < 1) {
-      // Soft shadow
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.45)';
       this.ctx.fillText(p.text, drawX + 1.5, drawY + 2);
 
-      // Glow halo
       this.ctx.fillStyle = this.rgbString(p.currentColor, 0.25 * p.ease);
       this.ctx.fillText(p.text, drawX, drawY);
     }
 
-    // Main text
     if (p.isShimmering) {
-      // Glow filter for shimmering phrase
-      this.ctx.shadowColor = 'rgba(255, 182, 193, 0.8)';
+      this.ctx.shadowColor = 'rgba(255, 182, 193, 0.85)';
       this.ctx.shadowBlur = 10;
     }
 
@@ -334,10 +348,8 @@ class RomanticHeartCanvas {
   }
 
   runLoop() {
-    // Clear canvas
     this.ctx.clearRect(0, 0, this.width, this.height);
 
-    // Spawning logic
     if (this.spawning) {
       this.acc += this.rate;
       while (this.acc >= 1 && this.itemsToSpawn.length > 0) {
@@ -349,12 +361,10 @@ class RomanticHeartCanvas {
       }
     }
 
-    // Render already placed/finished phrases
     for (let i = 0; i < this.rendered.length; i++) {
       this.drawPhrase(this.rendered[i], false);
     }
 
-    // Update & draw actively spawning phrases
     this.active = this.active.filter(p => {
       const isAlive = this.animate(p);
       this.drawPhrase(p, true);
@@ -362,7 +372,6 @@ class RomanticHeartCanvas {
     });
 
     if (!this.spawning && this.active.length === 0) {
-      // Drawing finished! Start post-render shimmer
       this.startShimmer();
       return;
     }
@@ -371,7 +380,7 @@ class RomanticHeartCanvas {
   }
 
   startShimmer() {
-    if (!this.isRunning) return;
+    if (!this.isRunning || this.prefersReducedMotion) return;
 
     const triggerShimmer = () => {
       if (!this.isRunning || this.mainItems.length === 0) return;
@@ -385,7 +394,6 @@ class RomanticHeartCanvas {
         const originalColor = [...item.color];
         item.currentColor = this.mix(originalColor, this.flashColor, 0.7);
 
-        // Redraw
         this.redrawAll();
 
         setTimeout(() => {
@@ -395,7 +403,7 @@ class RomanticHeartCanvas {
         }, 280);
       }
 
-      this.shimmerTimer = setTimeout(triggerShimmer, 160 + Math.random() * 120);
+      this.shimmerTimer = setTimeout(triggerShimmer, 180 + Math.random() * 120);
     };
 
     triggerShimmer();

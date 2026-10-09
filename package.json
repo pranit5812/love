@@ -1,0 +1,15 @@
+{
+  "name": "for-riddhima",
+  "version": "1.0.0",
+  "description": "A personalized romantic website for Riddhima from pranit",
+  "scripts": {
+    "start": "npx -y serve -l 8000",
+    "dev": "npx -y serve -l 8000"
+  },
+  "keywords": [
+    "romantic-website",
+    "love"
+  ],
+  "author": "pranit",
+  "license": "MIT"
+}
